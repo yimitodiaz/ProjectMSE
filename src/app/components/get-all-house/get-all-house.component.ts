@@ -1,10 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { listener } from '@angular/core/src/render3/instructions';
-import { FormControl, Validators } from '@angular/forms';
-import { MatInputModule, MatTableDataSource } from '@angular/material';
+import { Component, Input, OnInit, TestabilityRegistry } from '@angular/core';
 import { House } from 'src/app/models/house';
 import { student } from 'src/app/models/student';
 import { PeopleService } from 'src/app/services/people.service';
+import {sortBy} from 'sort-by';
 
 @Component({
   selector: 'app-get-all-house',
@@ -13,17 +11,14 @@ import { PeopleService } from 'src/app/services/people.service';
 })
 export class GetAllHouseComponent implements OnInit {
  
+  public filter =''; // touch the words that are leaking
   public listHouse : Array<House>= []; // List the house
   public listStudent : Array<student>= []; // List the member
   public selectHouse: string ='';  // Save the selected house
-  columns : string []= ['n','name',	'gender', 'ancestry',	'hairColour', 'image'];  // Save la columns for show in table 
-  public dataSource : MatTableDataSource<student>; // Initialize datasource with membership list  
-
-  animalControl = new FormControl('', Validators.required); //validate that the box is not empty 
-
+  
   constructor(private _peopleService: PeopleService) {
   }
-  
+ 
   /**
    * Created methods are initialized
    */
@@ -41,7 +36,8 @@ export class GetAllHouseComponent implements OnInit {
     .subscribe(data =>{
       for (let clave of data){
         if(this.listHouse.find(x=>x==clave.house)==undefined){
-          this.listHouse.push(clave.house);         
+          this.listHouse.push(clave.house);   
+
         }     
       }
     }) 
@@ -52,9 +48,29 @@ export class GetAllHouseComponent implements OnInit {
    */
   updatestudent(){
     this.getAllStudent();   
+    this.filter='';
     if(this.selectHouse===''){
-      this.dataSource = new MatTableDataSource();
+      this.listStudent=[];
+      this.filter='';
     } 
+  }
+
+  /**
+   * Method that sorts the table of members by name
+   * @returns The ordered list of members
+   */
+  getListOrderedMember(){
+    
+    this.filter='';
+   return this.listStudent.sort(function(name1,name2){
+     if(name1.name > name2.name){
+       return 1;
+     }
+     if(name1.name < name2.name){
+       return -1
+     }
+     return 0;
+   });
   }
 
   /**
@@ -64,20 +80,10 @@ export class GetAllHouseComponent implements OnInit {
     this._peopleService.getAllstudent<student>(this.selectHouse)
     .subscribe(data =>{
       this.listStudent=data;
-      this.dataSource = new MatTableDataSource(this.listStudent);
-    
     }) ;   
     
   }
-  /**
-   * Look in the table what the user wants to infiltrate
-   * @param event word to be searched
-   */
-  searchFilter(event){
-    
-    const searchValue = (event.target as HTMLInputElement).value;    
-    this.dataSource.filter= searchValue.trim().toLowerCase();   
-  }
+
 
  
   

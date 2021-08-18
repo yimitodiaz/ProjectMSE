@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { student } from '../models/student';
+import {  filter } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +33,10 @@ public getAllHouse<house>():  Observable <any>{
  * @param selectHouse Receive the selected house
  * @returns The list of members of the selected house
  */
-public getAllstudent<Student>(selectHouse: string):  Observable <any>{    
-  return  this.http.get<Student>(this.urlStudent +selectHouse);  
+public getAllstudent<student>(selectHouse: string):  Observable <any>{    
+  return  this.http.get<student>(this.urlStudent +selectHouse);  
 }
+
+
 
 }

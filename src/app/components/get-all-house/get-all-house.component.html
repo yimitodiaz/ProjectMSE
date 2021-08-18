@@ -1,72 +1,65 @@
 <div>
-  <mat-form-field appearance="fill">
+  <h5>Lists House</h5>  
+  <p>
     <!--Houses that were found are listed-->
-    <mat-label>List House</mat-label>
-    <mat-select [formControl]="animalControl" required [(ngModel)]="selectHouse" (ngModelChange)="updatestudent()">
-      <mat-option>--</mat-option>
-      <mat-option *ngFor="let item of listHouse" [value]="item">
-        {{item}}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="animalControl.hasError('required')">Choose a house</mat-error>
-  </mat-form-field>
-</div>
+    <select name="miselect" [(ngModel)]="selectHouse" (ngModelChange)="updatestudent()">
+    <option [value]="item" *ngFor="let item of listHouse" [ngValue]="item">
+      {{item}}</option>
+    </select> 
+   </p>
 
-<mat-form-field style="text-align: center;">
-  <!-- Look for the filter that is entered-->
-  <mat-label>Search</mat-label>
-  <input matInput placeholder="Search" (keyup)="searchFilter($event)">
-</mat-form-field>
-<div>
-  <!-- Table members in house select-->
-  <table mat-table [dataSource]="dataSource" >
-  
-    <!--  count Column -->
-    <ng-container matColumnDef="n">
-      <th mat-header-cell *matHeaderCellDef > N° </th>
-      <td mat-cell *matCellDef="let element; let indice=index "> {{indice+1}}</td>      
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef > Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}}</td>
-    </ng-container>
-  
-    <!-- Gender Column -->
-    <ng-container matColumnDef="gender">
-      <th mat-header-cell *matHeaderCellDef> Gender </th>
-      <td mat-cell *matCellDef="let element"> {{element.gender}}</td>
-    </ng-container>
-  
-    <!-- Ancestry Column -->
-    <ng-container matColumnDef="ancestry">
-      <th mat-header-cell *matHeaderCellDef> Ancestry </th>
-      <td mat-cell *matCellDef="let element"> {{element.ancestry}} </td>
-    </ng-container>
-  
-    <!-- HairColour Column -->
-    <ng-container matColumnDef="hairColour">
-      <th mat-header-cell *matHeaderCellDef> HairColour </th>
-      <td mat-cell *matCellDef="let element"> {{element.hairColour}} </td>
-    </ng-container>
-
-    <!-- Image Column -->
-    <ng-container matColumnDef="image">
-      <th mat-header-cell *matHeaderCellDef> Image </th>
-      <td mat-cell *matCellDef="let element">
-        <img width="80" src="{{element.image}}">
-       </td>
-    </ng-container>
+<!--create filter-->
+<div class="row">
+  <div class="col search">
+    <div class="form-group search">
+      <input type="text" class="form- control" name= "filter" placeholder="Search" [(ngModel)]="filter">
+    </div>
    
-    <!--Columns -->
-    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-  </table>
+  </div>
+ 
+  <div class=" order ">
+    <button  (click)="getListOrderedMember()" (ngModelChange)="updatestudent()">OrderName</button>
+  </div>
+
 </div>
-<div class="col-lg-6 offset-lg-3" *ngIf="listStudent.length===0 || selectHouse===''">
-  <div class="card mt-3">
-    <h4 style="text-align: center;">No house selected</h4>
+
+
+<div class="row">
+  <div class="col">
+  <!-- Table members in house select-->
+  <table class="table table-striped" >
+    <thead>
+      <tr>
+        <!--Create Columns -->
+        <th> N°</th>
+        <th  > Name</th>
+        <th> Gender </th>
+        <th> Ancestry </th>
+        <th> HairColour </th>
+        <th> Image </th>
+      </tr>
+  
+    </thead>
+    <tbody>
+      <tr *ngFor= 'let studen of listStudent | filterSearch: filter; let count=index' >
+        <td >{{count+1}}</td>   <!--  count Column -->
+        <td >{{studen.name}}</td>  <!-- Name Column -->
+        <td>{{studen.gender}}</td>   <!-- Gender Column -->
+        <td>{{studen.ancestry}}</td>  <!-- Ancestry Column -->
+        <td>{{studen.hairColour}}</td>  <!-- HairColour Column -->
+        <td><img src="{{studen.image}}"  width="100"></td>    <!-- Image Column -->
+      </tr>
+   
+    </tbody>  
+    </table>
+  </div>
+  
+  </div>
+  <div *ngIf="listStudent.length===0 || selectHouse===''">
+    <div>
+      <h4 >No house selected</h4>
+    </div>
+  
   </div>
 
 </div>

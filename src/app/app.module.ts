@@ -12,33 +12,19 @@ import { MatCardModule, MatDividerModule, MatFormField, MatFormFieldModule, MatI
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FilterSearchPipe } from './pipeFilter/filter-search.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GetAllHouseComponent
+    GetAllHouseComponent,
+    FilterSearchPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule,
-
-    MatTableModule, 
-    MatSortModule,
-    MatPaginatorModule,
-    MatCardModule,
-    MatSidenavModule,
-    MatDividerModule,  
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule, 
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatNativeDateModule,
-    MatOptionModule,
-    BrowserAnimationsModule
-  
+    HttpClientModule, 
     
   ],
   providers: [],
